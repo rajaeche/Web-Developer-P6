@@ -7,9 +7,49 @@ Student repository for project 6 of the Web Developer Path
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.4.
 
-## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+
+## Run Locally
+
+To run this project
+↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+
+Go to the project directory
+
+```bash
+  cd backend
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the server
+
+```bash
+  nodemon server
+  
+  /or/
+  
+  node server
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Code scaffolding
 
