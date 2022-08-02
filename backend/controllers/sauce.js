@@ -99,22 +99,28 @@ exports.getSingleSauce = (req, res, next) => {
 exports.editSauce = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id })
         .then((sauce) => {
-            if (req.file) {
-                const filename = sauce.imageUrl.split('/images/')[1];
-                fs.unlink(`images/${filename}`, (error) => {
-                    if (error) throw error;
-                })
+            if (sauce.userId != req.auth.userId) {
+                res.status(401).json({ message: 'Not authorized' });
+            } else {
+                if (req.file) {
+                    const filename = sauce.imageUrl.split('/images/')[1];
+                    fs.unlink(`images/${filename}`, (error) => {
+                        if (error) throw error;
+                    })
+                }
+                const sauceObject = req.file ? {
+                    ...JSON.parse(req.body.sauce),
+                    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+                } : { ...req.body };
+                Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
+                    .then(() => { res.status(200).json({ message: 'Sauce updated' }) })
+                    .catch((error) => { res.status(401).json({ error }) });
             }
-            const sauceObject = req.file ? {
-                ...JSON.parse(req.body.sauce),
-                imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-            } : { ...req.body };
-            Sauce.updateOne({ ...req.params.id }, sauceObject)
-                .then(() => { res.status(200).json({ message: 'Sauce updated' }) })
-                .catch((error) => { res.status(401).json({ error }) });
+                
         })
         .catch((error) => { res.status(401).json({ error }) });
 };
+
 
 
 
